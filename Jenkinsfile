@@ -1,6 +1,9 @@
 pipeline{
 
     agent any 
+    tools {
+        mavne 'maven'
+    }
 
     stages{
 
