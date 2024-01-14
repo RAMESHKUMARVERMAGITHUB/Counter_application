@@ -10,7 +10,7 @@ pipeline{
 
                 script{
                  
-                 git branch: 'main', url: 'https://github.com/vikash-kumar01/Counter_application.git'
+                 git branch: 'main', url: 'https://github.com/rameshkumarvermagithub/Counter_application.git'
 
                 }
             }
@@ -43,7 +43,7 @@ pipeline{
 
               script{
                    
-                  withSonarQubeEnv(credentialsId: 'sonar-api') {
+                  withSonarQubeEnv(credentialsId: 'sonar') {
                      
                      sh 'mvn clean package sonar:sonar'
                   }
@@ -56,7 +56,7 @@ pipeline{
 
               script{
                    
-                   waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
+                   waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
 
                 }
              }
@@ -79,8 +79,8 @@ pipeline{
               script{
                    
                    sh 'docker image build -t $JOB_NAME:v1.$BUILD_ID .'
-                   sh 'docker image tag $JOB_NAME:v1.$BUILD_ID vikashashoke/$JOB_NAME:v1.$BUILD_ID'
-                   sh 'docker image tag $JOB_NAME:v1.$BUILD_ID vikashashoke/$JOB_NAME:latest'
+                   sh 'docker image tag $JOB_NAME:v1.$BUILD_ID rameshkumarverma/$JOB_NAME:v1.$BUILD_ID'
+                   sh 'docker image tag $JOB_NAME:v1.$BUILD_ID rameshkumarverma/$JOB_NAME:latest'
 
                 }
              }
@@ -90,11 +90,11 @@ pipeline{
              steps{
 
               script{
-                   withCredentials([string(credentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]) {
+                   withCredentials([string(credentialsId: 'docker', variable: 'docker')]) {
                      
-                     sh 'docker login -u vikashashoke -p ${dockerhub_passwd}'
-                     sh 'docker image push vikashashoke/$JOB_NAME:v1.$BUILD_ID'
-                     sh 'docker image push vikashashoke/$JOB_NAME:latest'
+                     sh 'docker login -u rameshkumarverma -p ${docker}'
+                     sh 'docker image push rameshkumarverma/$JOB_NAME:v1.$BUILD_ID'
+                     sh 'docker image push rameshkumarverma/$JOB_NAME:latest'
                   }
                 }
              }
